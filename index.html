@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Interactive network topology and packet routing visualizer.">
+    <title>Network Topology &amp; Packet Routing Visualizer</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="toolbar" aria-label="Canvas controls">
+        <nav class="toolbar-row" aria-label="Primary controls">
+            <button type="button" id="saveBtn" title="Save image">Save Image</button>
+            <button type="button" id="pathBtn" title="Find path">Find Path</button>
+            <button type="button" id="stepBtn" title="Step BFS">Step BFS</button>
+            <button type="button" id="anycastBtn" title="Anycast server">Anycast Server</button>
+            <button type="button" id="connectBtn" title="Connect">Connect</button>
+            <button type="button" id="offlineBtn" title="Toggle offline">Toggle Offline</button>
+        </nav>
+        <nav class="toolbar-row toolbar-row-secondary" aria-label="Data controls">
+            <button type="button" id="deleteBtn" title="Delete selected">Delete</button>
+            <button type="button" id="clearBtn" title="Clear canvas">Clear</button>
+            <button type="button" id="loadBtn" title="Load demo">Load Demo</button>
+        </nav>
+    </header>
+    <main id="canvas" aria-label="Connection network canvas">
+        <svg id="network" xmlns="http://www.w3.org/2000/svg">
+            <g id="viewport">
+                <g id="edges"></g>
+                <g id="nodes"></g>
+            </g>
+        </svg>
+    </main>
+    <aside class="reachability" aria-label="Reachability by hop count">
+        <strong>Reachability (TTL):</strong>
+        <span>1 hop: <b id="ttl1Count">0</b></span>
+        <span>2 hops: <b id="ttl2Count">0</b></span>
+        <span>3+ hops: <b id="ttl3Count">0</b></span>
+    </aside>
+    <form id="nodeForm" class="node-form" hidden>
+        <label for="nodeName">Node hostname</label>
+        <input id="nodeName" type="text" maxlength="30" autocomplete="off" placeholder="Router-A">
+        <div class="role-options" aria-label="Node role">
+            <label>
+                <input type="radio" name="nodeRole" value="standard" checked>
+                <span>Standard</span>
+            </label>
+            <label>
+                <input type="radio" name="nodeRole" value="gateway">
+                <span title="Authentication Gateway">KEY</span>
+            </label>
+            <label>
+                <input type="radio" name="nodeRole" value="core">
+                <span title="Restricted Core">LOCKED</span>
+            </label>
+            <label>
+                <input type="radio" name="nodeRole" value="server">
+                <span title="Server">SERVER</span>
+            </label>
+        </div>
+        <button id="createNodeBtn" type="submit">Create</button>
+    </form>
+    <form id="edgeForm" class="edge-form" hidden>
+        <label for="edgeDistance">Connection distance</label>
+        <div class="edge-form-row">
+            <input id="edgeDistance" type="number" min="0.000001" step="any" value="1" required>
+            <button type="submit">Connect</button>
+            <button id="connectCancelBtn" class="cancel-button" type="button">Cancel</button>
+        </div>
+    </form>
+    <div id="modePrompt" class="mode-prompt" role="status" hidden></div>
+    <script src="script.js"></script>
+</body>
+</html>
